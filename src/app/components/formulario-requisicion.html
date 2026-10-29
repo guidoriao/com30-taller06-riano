@@ -1,0 +1,98 @@
+<div class="bg-white p-6 rounded shadow border border-gray-200">
+  <h2 class="text-xl font-bold mb-4">Nueva Requisición</h2>
+  <form [formGroup]="form" (ngSubmit)="enviar()" class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Solicitante</label>
+        <input type="text" formControlName="solicitante" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        @if (form.get('solicitante')?.invalid && form.get('solicitante')?.touched) {
+          <p class="text-sm text-red-600">Solicitante requerido (mínimo 3 caracteres)</p>
+        }
+      </div>
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Área</label>
+        <input type="text" formControlName="area" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        @if (form.get('area')?.invalid && form.get('area')?.touched) {
+          <p class="text-sm text-red-600">Área requerida (mínimo 3 caracteres)</p>
+        }
+      </div>
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Fecha Solicitud</label>
+        <input type="date" formControlName="fechaSolicitud" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        @if (form.get('fechaSolicitud')?.invalid && form.get('fechaSolicitud')?.touched) {
+          <p class="text-sm text-red-600">Fecha solicitud requerida</p>
+        }
+      </div>
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Fecha Requerida</label>
+        <input type="date" formControlName="fechaRequerida" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+        @if (form.get('fechaRequerida')?.invalid && form.get('fechaRequerida')?.touched) {
+          <p class="text-sm text-red-600">Fecha requerida requerida</p>
+        }
+      </div>
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Prioridad</label>
+        <select formControlName="prioridad" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+          <option value="">Seleccionar</option>
+          <option value="Baja">Baja</option>
+          <option value="Media">Media</option>
+          <option value="Alta">Alta</option>
+        </select>
+        @if (form.get('prioridad')?.invalid && form.get('prioridad')?.touched) {
+          <p class="text-sm text-red-600">Prioridad requerida</p>
+        }
+      </div>
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-gray-700">Justificación</label>
+        <textarea formControlName="justificacion" rows="3" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+        @if (form.get('justificacion')?.invalid && form.get('justificacion')?.touched) {
+          <p class="text-sm text-red-600">Justificación requerida (mínimo 10 caracteres)</p>
+        }
+      </div>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block text-sm font-medium text-gray-700">Artículos</label>
+      <div class="border rounded p-3 space-y-3 max-h-60 overflow-y-auto">
+        @for (articulo of articulos.controls; track i = $index) {
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Descripción</label>
+              <input formControlName="descripcion" class="w-full border rounded px-2 py-1 text-sm" />
+              @if (articulo.get('descripcion')?.invalid && articulo.get('descripcion')?.touched) {
+                <p class="text-xs text-red-600">Descripción requerida</p>
+              }
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Cantidad</label>
+              <input type="number" formControlName="cantidad" class="w-full border rounded px-2 py-1 text-sm" />
+              @if (articulo.get('cantidad')?.invalid && articulo.get('cantidad')?.touched) {
+                <p class="text-xs text-red-600">Mínimo 1</p>
+              }
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600">Valor Unitario</label>
+              <input type="number" formControlName="valorUnitario" class="w-full border rounded px-2 py-1 text-sm" />
+              @if (articulo.get('valorUnitario')?.invalid && articulo.get('valorUnitario')?.touched) {
+                <p class="text-xs text-red-600">Mínimo 0</p>
+              }
+            </div>
+            <div class="flex items-end">
+              <button type="button" (click)="quitarArticulo(i)" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-sm">Quitar</button>
+            </div>
+          </div>
+        } @empty {
+          <p class="text-sm text-gray-500">Agrega al menos un artículo.</p>
+        }
+      </div>
+      <button type="button" (click)="agregarArticulo()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm">Agregar Artículo</button>
+      @if (form.get('articulos')?.invalid && form.get('articulos')?.touched) {
+        <p class="text-sm text-red-600">Debe agregar al menos un artículo.</p>
+      }
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button type="submit" [disabled]="form.invalid" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium">Guardar Requisición</button>
+    </div>
+  </form>
+</div>
