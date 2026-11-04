@@ -1,9 +1,8 @@
 # COM30 - Taller 06: Requisición de Compra
 
 ## Estudiante
-- Nombre y apellidos: ______________________
-- Código: ______________________
-- Fecha: ______________________
+- Nombre y apellidos: Guido Riaño
+- Código: 8_GSIN_G2
 
 ## Escenario
 **E2 - Requisición de compra** (Tabla 1 del taller)
