@@ -1,8 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { importProvidersFrom } from '@angular/core';
-import { ZoneModule } from 'zone.js/bundles';
+import 'zone.js';
 import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(ZoneModule)]
-});
+bootstrapApplication(AppComponent);

@@ -11,7 +11,7 @@ export class RequisicionService {
   totalRegistros = computed(() => this.#requisiciones().length);
   pendientes = computed(() => this.#requisiciones().filter(r => r.estado === 'Pendiente').length);
 
-  agregar(requisicion: Omit<Requisicion, 'id'>) {
+  agregar(requisicion: Omit<Requisicion, 'id' | 'estado'>) {
     const ids = this.#requisiciones().map(r => r.id);
     const id = ids.length ? Math.max(...ids) + 1 : 1;
     const nueva: Requisicion = { ...requisicion, id, estado: 'Pendiente' };

@@ -1,8 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, FormArray, FormGroup } from '@angular/forms';
 import { RequisicionService } from '../services/requisicion.service';
 import { noSoloEspaciosValidator, fechaRangoValidator, minimoItemsValidator } from '../validators/custom-validators';
+
+interface ArticuloForm {
+  descripcion: string;
+  cantidad: number;
+  valorUnitario: number;
+}
 
 @Component({
   standalone: true,
@@ -22,15 +28,15 @@ export class FormularioRequisicionComponent {
     fechaRequerida: ['', [Validators.required]],
     justificacion: ['', [Validators.required, Validators.minLength(10), noSoloEspaciosValidator()]],
     prioridad: ['', [Validators.required]],
-    articulos: this.fb.nonNullable.array<{ descripcion: string; cantidad: number; valorUnitario: number }>([], [minimoItemsValidator(1)])
+    articulos: this.fb.nonNullable.array<ArticuloForm>([], [minimoItemsValidator(1)])
   }, { validators: [fechaRangoValidator()] });
 
-  get articulos() {
-    return this.form.controls.articulos as ReturnType<FormBuilder['nonNullable']>['array'];
+  get articulos(): FormArray {
+    return this.form.controls.articulos as FormArray;
   }
 
   agregarArticulo() {
-    const grupo = this.fb.nonNullable.group({
+    const grupo: FormGroup = this.fb.nonNullable.group({
       descripcion: ['', [Validators.required, noSoloEspaciosValidator()]],
       cantidad: [1, [Validators.required, Validators.min(1)]],
       valorUnitario: [0, [Validators.required, Validators.min(0)]]

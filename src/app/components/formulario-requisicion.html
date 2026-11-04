@@ -54,8 +54,8 @@
     <div class="space-y-2">
       <label class="block text-sm font-medium text-gray-700">Artículos</label>
       <div class="border rounded p-3 space-y-3 max-h-60 overflow-y-auto">
-        @for (articulo of articulos.controls; track i = $index) {
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
+        @for (articulo of articulos.controls; track $index) {
+          <div [formGroupName]="$index" class="grid grid-cols-1 md:grid-cols-4 gap-2 items-end">
             <div>
               <label class="block text-xs font-medium text-gray-600">Descripción</label>
               <input formControlName="descripcion" class="w-full border rounded px-2 py-1 text-sm" />
@@ -78,7 +78,7 @@
               }
             </div>
             <div class="flex items-end">
-              <button type="button" (click)="quitarArticulo(i)" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-sm">Quitar</button>
+              <button type="button" (click)="quitarArticulo($index)" class="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-sm">Quitar</button>
             </div>
           </div>
         } @empty {
