@@ -1,9 +1,9 @@
 # Informe - Taller 06 COM30
 
 ## 1. Datos del estudiante
-- Nombre y apellidos: ______________________
-- Código: ______________________
-- Fecha: ______________________
+- Nombre y apellidos: Guido Riaño
+- Código: 8_GSIN_G2
+
 
 ## 2. Escenario elegido
 **E2 - Requisición de compra**
@@ -27,7 +27,3 @@ Pegar aquí las capturas obligatorias:
 - Error de validador propio (solo espacios)
 - Resumen cargado con @defer
 - Repositorio abierto en ventana privada del navegador
-
-## 7. Enlaces
-- Repositorio GitHub: ______________________
-- Despliegue / vista previa: ______________________

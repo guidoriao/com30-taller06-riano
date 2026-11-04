@@ -61,9 +61,6 @@ Los archivos generados quedan en `dist/taller06/`.
 | C7 | Cantidad 0 en un artículo | Inválido: `Validators.min(1)` lo rechaza |
 | C8 | Cantidad 1 en un artículo | Válido: aceptado |
 
-## Repositorio
-Enlace público: ______________________ (abrir en ventana privada del navegador)
-
 ## Tecnologías
 - Angular 18+ (Standalone Components, Signals, Reactive Forms)
 - Tailwind CSS
