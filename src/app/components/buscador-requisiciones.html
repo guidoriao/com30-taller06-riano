@@ -1,0 +1,148 @@
+<div class="bg-white p-6 rounded shadow border border-gray-200">
+  <h2 class="text-xl font-bold mb-4">Buscador de Requisiciones</h2>
+
+  <!-- Campo de búsqueda -->
+  <div class="space-y-2 mb-6">
+    <label class="block text-sm font-medium text-gray-700">Buscar (solicitante, área, justificación, artículos)</label>
+    <input
+      type="text"
+      [formControl]="busqueda"
+      placeholder="Escriba al menos 2 caracteres..."
+      class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+    />
+
+    <!-- Indicador "Buscando…" (R3) -->
+    @if (busqueda.value.trim().length >= 2) {
+      <p class="text-xs text-indigo-600 italic">Buscando…</p>
+    }
+
+    <!-- Mensaje mínimo 2 caracteres (R7) -->
+    @if (busqueda.value.trim().length > 0 && busqueda.value.trim().length < 2) {
+      <p class="text-xs text-orange-600">Mínimo 2 caracteres para buscar</p>
+    }
+
+    <!-- Mensaje sin coincidencias (R7) -->
+    @if (resultados()?.length === 0 && busqueda.value.trim().length >= 2) {
+      <p class="text-xs text-red-600">Sin coincidencias</p>
+    }
+
+    <!-- Mensaje de cantidad encontrada -->
+    @if (resultados()?.length > 0 && busqueda.value.trim().length >= 2) {
+      <p class="text-xs text-green-600">{{ resultados().length }} registro(s) encontrado(s)</p>
+    }
+
+    <button
+      type="button"
+      (click)="limpiar()"
+      class="text-xs text-gray-500 underline hover:text-gray-700"
+    >
+      Limpiar búsqueda
+    </button>
+  </div>
+
+  <!-- Filtro por estado (R5) -->
+  <div class="mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Filtrar por estado:</label>
+    <div class="flex gap-2">
+      <button
+        (click)="cambiarFiltro('Todos')"
+        [class]="filtroEstado() === 'Todos' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700'"
+        class="px-3 py-1 rounded text-sm hover:bg-indigo-500 hover:text-white transition"
+      >
+        Todos
+      </button>
+      <button
+        (click)="cambiarFiltro('Pendiente')"
+        [class]="filtroEstado() === 'Pendiente' ? 'bg-yellow-600 text-white' : 'bg-gray-100 text-gray-700'"
+        class="px-3 py-1 rounded text-sm hover:bg-yellow-500 hover:text-white transition"
+      >
+        Pendiente
+      </button>
+      <button
+        (click)="cambiarFiltro('Aprobado')"
+        [class]="filtroEstado() === 'Aprobado' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'"
+        class="px-3 py-1 rounded text-sm hover:bg-green-500 hover:text-white transition"
+      >
+        Aprobado
+      </button>
+      <button
+        (click)="cambiarFiltro('Rechazado')"
+        [class]="filtroEstado() === 'Rechazado' ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-700'"
+        class="px-3 py-1 rounded text-sm hover:bg-red-500 hover:text-white transition"
+      >
+        Rechazado
+      </button>
+    </div>
+    <p class="text-xs text-gray-500 mt-1">El filtro no genera nuevas consultas</p>
+  </div>
+
+  <!-- Resultados -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded overflow-hidden">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="p-3 border text-left text-sm font-semibold">ID</th>
+          <th class="p-3 border text-left text-sm font-semibold">Solicitante</th>
+          <th class="p-3 border text-left text-sm font-semibold">Área</th>
+          <th class="p-3 border text-left text-sm font-semibold">Justificación</th>
+          <th class="p-3 border text-left text-sm font-semibold">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (r of visibles(); track r.id) {
+          <tr class="border-b hover:bg-gray-50">
+            <td class="p-3 border text-sm">{{ r.id }}</td>
+            <td class="p-3 border text-sm">{{ r.solicitante }}</td>
+            <td class="p-3 border text-sm">{{ r.area }}</td>
+            <td class="p-3 border text-sm">{{ r.justificacion }}</td>
+            <td class="p-3 border text-sm">
+              <span class="px-2 py-1 rounded text-xs font-medium"
+                [class]="r.estado === 'Pendiente' ? 'bg-yellow-100 text-yellow-800' : r.estado === 'Aprobado' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                {{ r.estado }}
+              </span>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5" class="p-4 text-center text-gray-500">
+              @if (busqueda.value.trim().length > 0 && busqueda.value.trim().length < 2) {
+                Escriba al menos 2 caracteres para buscar
+              } @else if (busqueda.value.trim().length >= 2) {
+                Sin coincidencias
+              } @else {
+                No hay resultados para mostrar
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Contadores (R4) -->
+  <div class="mt-6 p-4 bg-blue-50 rounded border border-blue-200">
+    <h3 class="font-bold text-blue-900 text-sm mb-2">Resumen de resultados filtrados</h3>
+    <div class="flex gap-4 text-sm text-blue-800">
+      <span><strong>Total:</strong> {{ totalVisibles() }}</span>
+      <span><strong>Pendientes:</strong> {{ pendientesVisibles() }}</span>
+      <span><strong>Aprobados:</strong> {{ aprobadosVisibles() }}</span>
+      <span><strong>Rechazados:</strong> {{ rechazadosVisibles() }}</span>
+    </div>
+  </div>
+
+  <!-- Historial de las 5 últimas consultas (R6) -->
+  <div class="mt-6 p-4 bg-gray-50 rounded border border-gray-200">
+    <h3 class="font-bold text-gray-900 text-sm mb-3">Historial de búsquedas (últimas 5)</h3>
+    @if (historial().length === 0) {
+      <p class="text-sm text-gray-500">Sin búsquedas recientes.</p>
+    } @else {
+      <ul class="space-y-1 text-sm">
+        @for (termino of historial(); track termino) {
+          <li class="p-2 bg-white border border-gray-300 rounded flex justify-between items-center">
+            <span class="text-gray-700">"{{ termino }}"</span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>
