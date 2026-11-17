@@ -10,6 +10,20 @@ function normalizar(texto: string): string {
     .trim();
 }
 
+function siguienteCodigo(ids: string[]): string {
+  if (ids.length === 0) {
+    return 'REQ-01';
+  }
+  const numeros = ids
+    .map((id) => {
+      const n = Number(id.replace('REQ-', ''));
+      return isNaN(n) ? 0 : n;
+    })
+    .sort((a, b) => b - a);
+  const next = numeros[0] + 1;
+  return `REQ-${String(next).padStart(2, '0')}`;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -182,23 +196,26 @@ export class RequisicionService {
     ];
 
     semilla.forEach((r, i) => {
-      const id = i + 1;
+      const id = `REQ-${String(i + 1).padStart(2, '0')}`;
       this.#requisiciones.update(lista => [...lista, { ...r, id, estado: r.estado }]);
     });
   }
 
-  agregar(requisicion: Omit<Requisicion, 'id' | 'estado'>) {
+  agregar(requisicion: Omit<Requisicion, 'id' | 'estado'>): string {
     const ids = this.#requisiciones().map(r => r.id);
-    const id = ids.length ? Math.max(...ids) + 1 : 1;
+    const id = siguienteCodigo(ids);
     const nueva: Requisicion = { ...requisicion, id, estado: 'Pendiente' };
     this.#requisiciones.update(lista => [...lista, nueva]);
+    return id;
   }
 
-  cambiarEstado(id: number, nuevoEstado: 'Aprobado' | 'Rechazado' | 'Pendiente') {
-    this.#requisiciones.update(lista => lista.map(r => r.id === id ? { ...r, estado: nuevoEstado } : r));
+  cambiarEstado(id: string, nuevoEstado: 'Aprobado' | 'Rechazado' | 'Pendiente') {
+    this.#requisiciones.update(lista =>
+      lista.map(r => (r.id === id ? { ...r, estado: nuevoEstado } : r))
+    );
   }
 
-  eliminar(id: number) {
+  eliminar(id: string) {
     this.#requisiciones.update(lista => lista.filter(r => r.id !== id));
   }
 

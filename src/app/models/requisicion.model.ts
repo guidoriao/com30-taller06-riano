@@ -7,7 +7,7 @@ export interface Articulo {
 export type EstadoRequisicion = 'Pendiente' | 'Aprobado' | 'Rechazado';
 
 export interface Requisicion {
-  id: number;
+  id: string;
   solicitante: string;
   area: string;
   fechaSolicitud: string;

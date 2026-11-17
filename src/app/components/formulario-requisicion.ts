@@ -1,6 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators, FormArray, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+  FormArray,
+  FormGroup
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { RequisicionService } from '../services/requisicion.service';
 import { noSoloEspaciosValidator, fechaRangoValidator, minimoItemsValidator } from '../validators/custom-validators';
 
@@ -20,6 +27,7 @@ interface ArticuloForm {
 export class FormularioRequisicionComponent {
   private fb = inject(FormBuilder);
   private requisicionService = inject(RequisicionService);
+  private router = inject(Router);
 
   form = this.fb.nonNullable.group({
     solicitante: ['', [Validators.required, Validators.minLength(3), noSoloEspaciosValidator()]],
@@ -49,7 +57,10 @@ export class FormularioRequisicionComponent {
   }
 
   enviar() {
-    // Validación temporalmente desactivada para entrega
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const valor = this.form.getRawValue();
     const requisicion = {
       solicitante: valor.solicitante,
@@ -60,19 +71,7 @@ export class FormularioRequisicionComponent {
       prioridad: valor.prioridad,
       articulos: valor.articulos
     };
-    this.requisicionService.agregar(requisicion);
-    this.form.reset({
-      solicitante: '',
-      area: '',
-      fechaSolicitud: '',
-      fechaRequerida: '',
-      justificacion: '',
-      prioridad: '',
-      articulos: []
-    });
-    while (this.articulos.length) {
-      this.articulos.removeAt(0);
-    }
-    this.agregarArticulo();
+    const codigoNuevo = this.requisicionService.agregar(requisicion);
+    this.router.navigate(['/requisiciones', codigoNuevo]);
   }
 }
