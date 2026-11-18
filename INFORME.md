@@ -30,7 +30,7 @@
 
 ## 4. Tabla B · Casos de prueba (9 casos mínimos)
 
-| Caso | Acción | Resultado esperado | Obtenido (captura) |
+| Caso | Acción | Resultado esperado | Obtenido|
 |:----:|:-------|:-------------------|:------------------:|
 | C1 | Escribir "sistemas" | 6 registros. Llamadas: 1 | |
 | C2 | Cambiar a "sist" | 6 registros. Llamadas: 2 | |

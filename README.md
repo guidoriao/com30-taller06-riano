@@ -1,4 +1,5 @@
 # COM30 - Taller 06: Requisición de Compra
+# Taller 7 + Taller 8 actualizado
 
 ## Estudiante
 - Nombre y apellidos: Guido Riaño
@@ -40,13 +41,6 @@ ng serve
 ```
 
 Luego abrir el navegador en: `http://localhost:4200/`
-
-## Cómo ejecutar (producción)
-```powershell
-npm install
-ng build
-```
-Los archivos generados quedan en `dist/taller06/`.
 
 ## Casos de prueba definidos (según Tabla 2 del taller)
 
