@@ -21,7 +21,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
                 routerLinkActive="text-indigo-600 font-semibold"
                 [routerLinkActiveOptions]="{ exact: true }"
                 class="text-sm hover:text-indigo-600 transition"
-              >Listado</a
+                >Listado</a
               >
             </li>
             <li>
@@ -29,7 +29,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
                 routerLink="/requisiciones/nueva"
                 routerLinkActive="text-indigo-600 font-semibold"
                 class="text-sm hover:text-indigo-600 transition"
-              >Nueva Requisición</a
+                >Nueva Requisición</a
               >
             </li>
             <li>
@@ -37,7 +37,15 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
                 routerLink="/estadisticas"
                 routerLinkActive="text-indigo-600 font-semibold"
                 class="text-sm hover:text-indigo-600 transition"
-              >Estadísticas</a
+                >Estadísticas</a
+              >
+            </li>
+            <li>
+              <a
+                routerLink="/parcial2"
+                routerLinkActive="text-amber-600 font-bold"
+                class="text-sm font-semibold text-amber-700 hover:text-amber-600 transition"
+                >Parcial 2</a
               >
             </li>
           </ul>
